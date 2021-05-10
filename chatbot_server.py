@@ -1,15 +1,11 @@
 import nltk
 from nltk.stem import WordNetLemmatizer
-lemmatizer = WordNetLemmatizer()
 import pickle
-import numpy as np
-
+import numpy
 from keras.models import load_model
-model = load_model('chatbot_model.h5')
 import json
 from json import loads
 from json import dumps
-
 import random
 import couchdb
 from kafka import KafkaConsumer  # consumer of events
@@ -28,6 +24,8 @@ producer = KafkaProducer(bootstrap_servers=['129.114.26.34:9092'],
 words = pickle.load(open('words.pkl','rb'))
 classes = pickle.load(open('classes.pkl','rb'))
 
+lemmatizer = WordNetLemmatizer()
+model = load_model('chatbot_model.h5')
 
 def clean_up_sentence(sentence):
     sentence_words = nltk.word_tokenize(sentence)
@@ -48,12 +46,12 @@ def bow(sentence, words, show_details=True):
                 bag[i] = 1
                 if show_details:
                     print ("found in bag: %s" % w)
-    return(np.array(bag))
+    return(numpy.array(bag))
 
 def predict_class(sentence, model):
     # filter out predictions below a threshold
     p = bow(sentence, words,show_details=False)
-    res = model.predict(np.array([p]))[0]
+    res = model.predict(numpy.array([p]))[0]
     ERROR_THRESHOLD = 0.25
     results = [[i,r] for i,r in enumerate(res) if r>ERROR_THRESHOLD]
     # sort by strength of probability

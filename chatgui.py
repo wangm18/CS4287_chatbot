@@ -30,9 +30,6 @@ def send():
         ChatLog.config(state=NORMAL)
         ChatLog.insert(END, "You: " + msg + '\n\n')
         ChatLog.config(foreground="#442265", font=("Verdana", 12 ))
-
-        #res = chatbot_response(msg)
-        
         consumer.subscribe (topics=["chatbot_responses"])        
         producer.send('chatbot', value=msg)
         producer.flush()
@@ -51,7 +48,7 @@ def send():
 
 
 base = Tk()
-base.title("Hello")
+base.title("CS4287 Chatbot")
 base.geometry("400x500")
 base.resizable(width=FALSE, height=FALSE)
 
@@ -71,8 +68,6 @@ SendButton = Button(base, font=("Verdana",12,'bold'), text="Send", width="12", h
 
 #Create the box to enter message
 EntryBox = Text(base, bd=0, bg="white",width="29", height="5", font="Arial")
-#EntryBox.bind("<Return>", send)
-
 
 #Place all components on the screen
 scrollbar.place(x=376,y=6, height=386)

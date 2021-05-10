@@ -50,6 +50,7 @@ def bow(sentence, words, show_details=True):
 
 def predict_class(sentence, model):
     # filter out predictions below a threshold
+    print("SENTENCE@@@@@@@@@@:", sentence)
     p = bow(sentence, words,show_details=False)
     res = model.predict(numpy.array([p]))[0]
     ERROR_THRESHOLD = 0.25
@@ -78,6 +79,6 @@ def chatbot_response(msg):
 
 for msg in consumer:
     print(msg)
-    res = chatbot_response(str(msg))
+    res = chatbot_response(str(msg.value))
     producer.send('chatbot_responses', value=res)
     producer.flush()
